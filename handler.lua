@@ -41,6 +41,12 @@ function JwtClaimsValidateHandler:access(conf)
   JwtClaimsValidateHandler.super.access(self)
   local continue_on_error = conf.continue_on_error
 
+  if ngx.ctx.authenticated_consumer and conf.anonymous ~= "" then
+    -- we're already authenticated, and we're configured for using anonymous,
+    -- hence we're in a logical OR between auth methods and we're already done.
+    return
+  end
+
   local token, err = retrieve_token(ngx.req, conf)
   if err and not continue_on_error then
     return responses.send_HTTP_INTERNAL_SERVER_ERROR(err)
