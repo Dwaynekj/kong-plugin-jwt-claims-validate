@@ -30,7 +30,7 @@ return {
   no_consumer = true,
   fields = {
     uri_param_names = { type = "array", default = { "jwt" } },
-    claims = { type = "table", func = claim_check },
+    claims = { type = "table", default = { }, func = claim_check },
     anonymous = { type = "string", default = "", func = check_user }
   }
 }
