@@ -5,6 +5,7 @@ local req_set_header = ngx.req.set_header
 local ngx_re_gmatch = ngx.re.gmatch
 
 local JwtClaimsValidateHandler = BasePlugin:extend()
+JwtClaimsValidateHandler.PRIORITY = 949 --Bundled Plugins JWT is 1005 and ACL is 950
 
 local function retrieve_token(request, conf)
   local uri_parameters = request.get_uri_args()

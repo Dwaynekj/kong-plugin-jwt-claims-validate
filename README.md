@@ -30,21 +30,21 @@ claim property that failed. For example
 <
 {"message":"JSON Web Token has invalid claim value for 'username'"}
 ```
+
 ## Configuration
 
-The **kong-plugin-jwt-claims-validate** plugin can only be applied to an API,
+The **kong-plugin-jwt-claims-validate** plugin can be applied to an API/Service,
 and not a consumer. It can be enabled with the following request
 
 ```bash
-curl -X POST http://localhost:8001/apis/29414666-6b91-430a-9ff0-50d691b03a45/plugins \
+curl -X POST http://localhost:8001/{services|routes}/{id}/plugins \
   -d '{
     "name": "jwt-claims-validate",
     "config": {
       "uri_param_names": "jwt",
       "claims": {
-        "username": "wshirey",
-        "id": 19829132,
-        "is_admin": true
+        "groups": "group1, group2",
+        "id": 19829132
       }
     }
   }'
@@ -54,15 +54,22 @@ This will check the JWT payload body to at least include the following JSON
 
 ```JSON
 {
-  "username": "wshirey",
   "id": 19829132,
-  "is_admin": true
+  "groups": "group1"
 }
 ```
 
-> The plugin only supports scalar values, so if you have a nested JSON array or
-> object in the payload body, it will not iterate over the values to check if it
-> has your specified value.
+OR
+
+```JSON
+{
+  "id": 19829132,
+  "groups": "group2"
+}
+```
+
+> The plugin only support scalar values, however you use a comma delimited string to represent a list
+> in the payload body, it will iterate over the values to check if has least one of your specified value.
 
 An example JWT can be found at the [jwt.io playground](https://jwt.io/#debugger?&id_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndzaGlyZXkiLCJpZCI6MTk4MjkxMzIsImlzX2FkbWluIjp0cnVlfQ.DTUXDMnSKJxSv9yo9Gih1sWMyeQ_X436wYqU2-Np1ss)
 
@@ -73,6 +80,8 @@ form parameter|required|description
 `name`|*required*|The name of the plugin to use, in this case: `jwt-claims-validate`
 `uri_param_names`|*optional*|A list of querystring parameters that Kong will inspect to retrieve JWTs. Defaults to `jwt`.
 `claims`|*required*|A table of claims that Kong will validate in the JWT payload body. Lua types supported are *[boolean, string, number]*.
+
+## How to Load
 
 ## See also
 
