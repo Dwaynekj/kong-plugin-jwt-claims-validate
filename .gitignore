@@ -41,3 +41,7 @@ kong-plugin-jwt-claims-validate*
 *.x86_64
 *.hex
 
+/lua
+/lua_modules
+luarocks
+.luarocks
