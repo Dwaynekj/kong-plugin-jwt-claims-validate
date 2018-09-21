@@ -38,6 +38,7 @@ and not a consumer. It can be enabled with the following request
 
 ```bash
 curl -X POST http://localhost:8001/{services|routes}/{id}/plugins \
+  -H "Content-Type: application/json" \
   -d '{
     "name": "jwt-claims-validate",
     "config": {
